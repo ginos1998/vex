@@ -14,10 +14,6 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 @EnableR2dbcRepositories
 public class VexApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VexApplication.class, args);
-	}
-
 	@Bean
 	ConnectionFactoryInitializer initializer(@Qualifier("connectionFactory") ConnectionFactory connectionFactory) {
 		ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
@@ -25,5 +21,9 @@ public class VexApplication {
 		ResourceDatabasePopulator resource = new ResourceDatabasePopulator(new ClassPathResource("schema.sql"));
 		initializer.setDatabasePopulator(resource);
 		return initializer;
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(VexApplication.class, args);
 	}
 }
