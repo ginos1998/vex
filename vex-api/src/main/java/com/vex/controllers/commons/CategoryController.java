@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.vex.delegates.commons.interfaces.CategoryDelegate;
 import com.vex.exceptions.ServiceException;
 import com.vex.models.dtos.SubCategoryDTO;
-import com.vex.models.entities.SubCategory;
 import com.vex.utils.Views;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("${app.version}/category")
-@Api(value = "Category Controller", tags = "Category Controller", produces = "application/json", consumes = "application/json")
+@ApiOperation(value = "Category API", tags = "Category")
 @Primary
 @RequiredArgsConstructor
 public class CategoryController {
@@ -28,14 +29,14 @@ public class CategoryController {
     private final CategoryDelegate categoryDelegate;
 
     @GetMapping("/sub-categories")
-    @ApiOperation(value = "Returns a list of sub-categories filtering by categoryId or subCategoryName, or both. If no parameters are passed, returns all sub-categories.",
-            response = SubCategory.class, responseContainer = "dto", produces = "application/json")
+    @Operation(summary = "Returns a list of sub-categories filtering by categoryId or subCategoryName, or both. If no parameters are passed, returns all sub-categories.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "List successfully returned."),
-            @ApiResponse(code = 204, message = "No content."),
-            @ApiResponse(code = 404, message = "Not found."),
-            @ApiResponse(code = 409, message = "Conflict."),
-            @ApiResponse(code = 500, message = "Internal server error.")
+            @ApiResponse(responseCode = "200", description = "List successfully returned.",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = SubCategoryDTO.class)) }),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
 
     })
     @JsonView(Views.Public.class)
@@ -45,14 +46,13 @@ public class CategoryController {
     }
 
     @PostMapping("/sub-categories")
-    @ApiOperation(value = "Saves a new sub category",
-            response = SubCategory.class, responseContainer = "dto", produces = "application/json")
+    @Operation(summary = "Saves a new sub category")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created."),
-            @ApiResponse(code = 204, message = "No content."),
-            @ApiResponse(code = 404, message = "Not found."),
-            @ApiResponse(code = 409, message = "Conflict."),
-            @ApiResponse(code = 500, message = "Internal server error.")
+            @ApiResponse(responseCode = "201", description = "Successfully created."),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
 
     })
     @JsonView(Views.Public.class)
@@ -63,14 +63,13 @@ public class CategoryController {
     }
 
     @PutMapping("/sub-categories/{subCategoryId}")
-    @ApiOperation(value = "Updates a sub category",
-            response = SubCategory.class, responseContainer = "dto", produces = "application/json")
+    @Operation(summary = "Updates a sub category")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated."),
-            @ApiResponse(code = 204, message = "No content."),
-            @ApiResponse(code = 404, message = "Not found."),
-            @ApiResponse(code = 409, message = "Conflict."),
-            @ApiResponse(code = 500, message = "Internal server error.")
+            @ApiResponse(responseCode = "200", description = "Successfully updated."),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
 
     })
     @JsonView(Views.Public.class)
@@ -82,13 +81,12 @@ public class CategoryController {
     }
 
     @DeleteMapping("/sub-categories/{subCategoryId}")
-    @ApiOperation(value = "Deletes a sub category",
-            response = SubCategory.class, responseContainer = "dto", produces = "application/json")
+    @Operation(summary = "Deletes a sub category")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deleted."),
-            @ApiResponse(code = 404, message = "Not found."),
-            @ApiResponse(code = 409, message = "Conflict."),
-            @ApiResponse(code = 500, message = "Internal server error.")
+            @ApiResponse(responseCode = "200", description = "Successfully deleted."),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
 
     })
     @JsonView(Views.Public.class)
@@ -96,7 +94,6 @@ public class CategoryController {
         return categoryDelegate.deleteSubCategory(subCategoryId)
                 .then(Mono.defer(() -> Mono.just(ResponseEntity.status(HttpStatus.OK).build())));
     }
-
 
 
 
