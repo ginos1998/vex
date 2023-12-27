@@ -1,7 +1,6 @@
 package com.vex.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.vex.models.entities.Category;
 import com.vex.utils.Views;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +28,7 @@ public class SubCategoryDTO {
 
     @Builder.Default
     @JsonView(Views.Public.class)
-    private List<Category> categories = List.of();
+    private List<CategoryDTO> categories = List.of();
 
     public static Mono<SubCategoryDTO> fromRow(List<Map<String, Object>> rows) {
         return Mono.just(SubCategoryDTO.builder()
@@ -38,7 +37,7 @@ public class SubCategoryDTO {
                         .categoryId((Integer) rows.get(0).get("sc_category_id"))
                         .available((String) rows.get(0).get("sc_available"))
                         .categories(rows.stream()
-                                .map(Category::fromRow)
+                                .map(CategoryDTO::fromRow)
                                 .filter(Objects::nonNull)
                                 .toList())
                         .build()

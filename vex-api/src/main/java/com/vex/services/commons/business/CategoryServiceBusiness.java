@@ -4,12 +4,10 @@ import com.vex.exceptions.ExceptionType;
 import com.vex.exceptions.ServiceException;
 import com.vex.models.dtos.CategoryDTO;
 import com.vex.models.dtos.SubCategoryDTO;
-import com.vex.models.entities.Category;
 import com.vex.repositories.CategoryRepository;
 import com.vex.repositories.SubCategoryRepository;
 import com.vex.services.commons.interfaces.CategoryService;
 import com.vex.services.commons.interfaces.SubCategoryService;
-import com.vex.utils.DefaultMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -27,37 +25,39 @@ public class CategoryServiceBusiness implements CategoryService, SubCategoryServ
     private final SubCategoryRepository subCategoryRepository;
 
     @Override
-    public Flux<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public Flux<CategoryDTO> getCategories(Integer categoryId, String categoryName) throws ServiceException {
+        try {
+            return categoryRepository.getCategories(categoryId, categoryName);
+        } catch (Exception e) {
+            throw new ServiceException(e, ExceptionType.ERROR_GETTING_CATEGORIES);
+        }
     }
 
     @Override
-    public Mono<Category> getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId);
+    public Mono<CategoryDTO> saveNewCategory(CategoryDTO category) throws ServiceException {
+        try {
+            return categoryRepository.saveNewCategory(category);
+        } catch (Exception e) {
+            throw new ServiceException(e, ExceptionType.ERROR_SAVING_CATEGORY, category);
+        }
     }
 
     @Override
-    public Mono<Category> saveNewCategory(CategoryDTO category) {
-        return categoryRepository.save(DefaultMapper.getInstance()
-                .getMapper()
-                .map(category, Category.class));
+    public Mono<CategoryDTO> updateCategory(Integer categoryId, CategoryDTO category) throws ServiceException {
+        try {
+            return categoryRepository.updateCategory(categoryId, category);
+        } catch (Exception e) {
+            throw new ServiceException(e, ExceptionType.ERROR_UPDATING_CATEGORY, categoryId, category);
+        }
     }
 
     @Override
-    public Mono<Category> updateCategory(Long categoryId, CategoryDTO category) {
-        return categoryRepository.findById(categoryId)
-                .flatMap(c -> {
-                    Category mappedCategory = DefaultMapper.getInstance()
-                            .getMapper()
-                            .map(category, Category.class);
-                    return categoryRepository.save(mappedCategory);
-                });
-    }
-
-    @Override
-    public Mono<Void> deleteCategory(Long categoryId) {
-        return categoryRepository.findById(categoryId)
-                .flatMap(categoryRepository::delete);
+    public Mono<Void> deleteCategory(Integer categoryId) throws ServiceException {
+        try {
+            return categoryRepository.deleteCategory(categoryId);
+        } catch (Exception e) {
+            throw new ServiceException(e, ExceptionType.ERROR_DELETING_CATEGORY, categoryId);
+        }
     }
 
     @Override

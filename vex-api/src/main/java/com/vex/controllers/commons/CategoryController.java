@@ -3,6 +3,7 @@ package com.vex.controllers.commons;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.vex.delegates.commons.interfaces.CategoryDelegate;
 import com.vex.exceptions.ServiceException;
+import com.vex.models.dtos.CategoryDTO;
 import com.vex.models.dtos.SubCategoryDTO;
 import com.vex.utils.Views;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,73 @@ import reactor.core.publisher.Mono;
 public class CategoryController {
 
     private final CategoryDelegate categoryDelegate;
+
+    @GetMapping()
+    @Operation(summary = "Returns a list of categories filtering by categoryId or subCategoryName, or both. If no parameters are passed, returns all sub-categories.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List successfully returned.",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = SubCategoryDTO.class)) }),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
+
+    })
+    @JsonView(Views.Public.class)
+    public Flux<?> getCategories(@RequestParam(required = false) Integer categoryId,
+                                    @RequestParam(required = false) String categoryName) throws ServiceException {
+        return categoryDelegate.getCategories(categoryId, categoryName);
+    }
+
+    @PostMapping()
+    @Operation(summary = "Saves a new category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created."),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
+
+    })
+    @JsonView(Views.Public.class)
+    public Mono<ResponseEntity<CategoryDTO>> saveNewCategory(@RequestBody CategoryDTO subCategory) throws ServiceException {
+        return categoryDelegate.saveNewCategory(subCategory)
+                .flatMap(categoryDTO -> Mono.just(ResponseEntity.status(HttpStatus.CREATED).body(categoryDTO)))
+                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
+    }
+
+    @PutMapping("/{categoryId}")
+    @Operation(summary = "Updates a category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated."),
+            @ApiResponse(responseCode = "204", description = "No content.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
+
+    })
+    @JsonView(Views.Public.class)
+    public Mono<ResponseEntity<CategoryDTO>> updateCategory(@PathVariable Integer categoryId,
+                                                                  @RequestBody CategoryDTO subCategory) throws ServiceException {
+        return categoryDelegate.updateCategory(categoryId, subCategory)
+                .flatMap(categoryDTO -> Mono.just(ResponseEntity.status(HttpStatus.CREATED.value()).body(categoryDTO)))
+                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
+    }
+
+    @DeleteMapping("/{categoryId}")
+    @Operation(summary = "Deletes a sub category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted."),
+            @ApiResponse(responseCode = "404", description = "Not found.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content)
+
+    })
+    @JsonView(Views.Public.class)
+    public Mono<ResponseEntity<Void>> deleteCategory(@PathVariable Integer categoryId) throws ServiceException {
+        return categoryDelegate.deleteCategory(categoryId)
+                .then(Mono.defer(() -> Mono.just(ResponseEntity.status(HttpStatus.OK).build())));
+    }
 
     @GetMapping("/sub-categories")
     @Operation(summary = "Returns a list of sub-categories filtering by categoryId or subCategoryName, or both. If no parameters are passed, returns all sub-categories.")
@@ -94,7 +162,5 @@ public class CategoryController {
         return categoryDelegate.deleteSubCategory(subCategoryId)
                 .then(Mono.defer(() -> Mono.just(ResponseEntity.status(HttpStatus.OK).build())));
     }
-
-
 
 }

@@ -1,10 +1,13 @@
 package com.vex.repositories;
 
-import com.vex.models.entities.Category;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import org.springframework.stereotype.Repository;
+import com.vex.exceptions.ServiceException;
+import com.vex.models.dtos.CategoryDTO;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-@Repository
-public interface CategoryRepository extends ReactiveCrudRepository<Category, Long> {
-
+public interface CategoryRepository {
+    Flux<CategoryDTO> getCategories(Object ...args);
+    Mono<CategoryDTO> saveNewCategory(CategoryDTO category) throws ServiceException;
+    Mono<CategoryDTO> updateCategory(Integer categoryId, CategoryDTO category) throws ServiceException;
+    Mono<Void> deleteCategory(Integer categoryId) throws ServiceException;
 }
