@@ -6,6 +6,8 @@
 - [User](#user)
 - [Token](#token)
 
+Configurar la variable de entorno `SERVER_PORT=9009` indicando el puerto deseado.
+
 ## Database
 La base de datos utilizada es postgresql. Se puede crear un contenedor con la imagen de postgresql
 ejecutando el siguiente comando:
@@ -63,7 +65,7 @@ y sus roles en la tabla intermedia 'user_roles'.
 ## Token
 Para obtener un token de acceso, para hacer pruebas, podemos entrar a la paǵina [OAuth 2.0 Playground](https://oauthdebugger.com/)
 y configurar los campos de la siguiente manera:
-- **Authorize URI**: http://localhost:<port>/oauth/authorize
+- **Authorize URI**: http://localhost:9009/oauth/authorize
 - **Redirect URI**: https://oauthdebugger.com/debug
 - **Client ID**: client
 - **Scope**: openid
