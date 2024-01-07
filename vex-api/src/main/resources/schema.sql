@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS __vex
+(
+    id_vex SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
+);
