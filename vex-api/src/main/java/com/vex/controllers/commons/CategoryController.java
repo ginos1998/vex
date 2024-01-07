@@ -29,6 +29,11 @@ public class CategoryController {
 
     private final CategoryDelegate categoryDelegate;
 
+    @GetMapping("/test")
+    public Mono<String> test() {
+        return Mono.just("Ok");
+    }
+
     @GetMapping()
     @Operation(summary = "Returns a list of categories filtering by categoryId or subCategoryName, or both. If no parameters are passed, returns all sub-categories.")
     @ApiResponses(value = {
