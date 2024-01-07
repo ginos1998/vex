@@ -5,8 +5,7 @@
 - [Client](#client)
 - [User](#user)
 - [Token](#token)
-
-Configurar la variable de entorno `SERVER_PORT=9009` indicando el puerto deseado.
+- [Variables de entorno](#variablesdeentorno)
 
 ## Database
 La base de datos utilizada es postgresql. Se puede crear un contenedor con la imagen de postgresql
@@ -118,3 +117,11 @@ En la página [JWT.io](https://jwt.io/) podemos decodificar el token de acceso y
   "username": "admin"
 }
 ```
+
+## Variables de entorno
+Configurar las siguientes variables de entorno para la base de datos:
+- `DB_HOST`: indicar el host de la base de datos.
+- `DB_PORT`: indicar el puerto de la base de datos.
+- `DB_NAME`: indicar el nombre de la base de datos.
+- `DB_USER`: indicar el usuario de la base de datos.
+- `DB_PASSWORD`: indicar la contraseña de la base de datos.
