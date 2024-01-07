@@ -30,3 +30,11 @@ Como se mencionó anteriormente, la API utiliza postgresql como base de datos. E
 es guardar `scripts.sql` de creación de tablas, funciones, triggers, etc. que son utilizados por **vex-api**.
 
 Más información en [Resource Server Database](https://github.com/ginos1998/vex/tree/develop/vex-db).
+
+## Variables de entorno
+COnfigurar las siguientes variables de entorno para la base de datos:
+- `DB_HOST`: indicar el host de la base de datos.
+- `DB_PORT`: indicar el puerto de la base de datos.
+- `DB_NAME`: indicar el nombre de la base de datos.
+- `DB_USER`: indicar el usuario de la base de datos.
+- `DB_PASSWORD`: indicar la contraseña de la base de datos.
