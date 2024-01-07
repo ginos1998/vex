@@ -14,3 +14,11 @@ sudo docker-compose up -d
 ```
 El mismo archivo también crea un contenedor con la imagen de pgAdmin, que es una herramienta para administrar bases de datos postgresql.
 Esto último es solo opcional.
+
+## Variables de entorno
+- `SERVER_PORT=`: indicar el puerto deseado para iniciar el servidor.
+- `ISSUER_URI=`: indicar la URI del _Auth Server_. Por ejemplo, http://localhost:9009.
+- `DB_HOST=`: indicar host de la base de datos.
+- `DB_NAME=`: indicar nombre de la base de datos.
+- `DB_USER=`: indicar usuario de la base de datos.
+- `DB_PSW=`: indicar contraseña de la base de datos.
