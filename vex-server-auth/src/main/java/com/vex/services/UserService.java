@@ -21,6 +21,7 @@ public class UserService {
     private final RoleService roleService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final KafkaProducers kafkaProducers;
 
     public MessageDto createUser(CreateAppUserDto dto){
         User appUser = User.builder()
@@ -36,6 +37,7 @@ public class UserService {
         Set<Role> roles = roleService.findRolesByRoleType(dto.roles());
         appUser.setRoles(roles);
         userRepository.save(appUser);
+        kafkaProducers.sendNewUserMessage(appUser.getUsername());
         log.info("user {} saved successfully!", appUser.getUsername());
         return new MessageDto("user " + appUser.getUsername() + " saved successfully!");
     }
