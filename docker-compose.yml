@@ -6,18 +6,41 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    environment:
-      - DATABASE_HOST=127.0.0.1
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=vex
+    env_file: 
+      - vex-db/.env.api-db
+
+  auth-pgdb:
+    container_name: vex-auth-pgdb
+    image: postgres:14.10
+    restart: always
+    ports:
+      - "5342:5342"
+    env_file:
+      - vex-db/.env.auth-db
 
   pgadmin:
+    container_name: vex-pgadmin
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "vex@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "vex"
+    env_file:
+      - vex-db/.env.pgadmin
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
         - postgres
+        - auth-pgdb
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    env_file:
+      - .env.zookeeper
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    env_file:
+      - .env.kafka
