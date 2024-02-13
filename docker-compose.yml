@@ -2,21 +2,15 @@ version: "3.8"
 
 services:
   postgres:
+    container_name: vex-postgres
     image: postgres:14.10
     restart: always
+    volumes:
+      - ../vex/vex-db/init-databases:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5430:5432"
     env_file: 
       - vex-db/.env.api-db
-
-  auth-pgdb:
-    container_name: vex-auth-pgdb
-    image: postgres:14.10
-    restart: always
-    ports:
-      - "5342:5342"
-    env_file:
-      - vex-db/.env.auth-db
 
   pgadmin:
     container_name: vex-pgadmin
@@ -27,9 +21,9 @@ services:
       - "81:80"
     depends_on:
         - postgres
-        - auth-pgdb
 
   zookeeper:
+    container_name: vex-zookeeper
     image: confluentinc/cp-zookeeper:latest
     env_file:
       - .env.zookeeper
@@ -37,6 +31,7 @@ services:
       - 22181:2181
   
   kafka:
+    container_name: vex-kafka
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
