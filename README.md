@@ -8,8 +8,11 @@
 
 ## Introduction
 Este repositorio contiene servicios desarrollados con Spring Boot 3.2.0 y Java 17.
-Por un lado, tenemos un servidor de autenticación y autorización de usuarios, y, 
-por otro lado, una API RESTful. También, se utilizó postgresql como base de datos.
+Por un lado, tenemos un servidor de autenticación y autorización de usuarios y, 
+por otro lado, una API RESTful. La base de datos utilizada para ambos servicios es postgres.
+
+> [!NOTE]
+> El archivo `docker-compose.yml` se encarga de crear los contenedores para cada servicio detallados a continuación.
 
 ## Authorization Server
 Este servicio es el encargado de autenticar y autorizar a los usuarios. Para ello,
@@ -36,21 +39,5 @@ Se ha hecho una simple implementación del servicio de Apache kafka para que, cu
 se notifique al _Resource Server_ y cree un nuevo personal. Este personal mantiene una relacion 1-1 con el 
 usuario correspondiente, pero en bases de datos distintas. Esto con el fin de mantener modularizos los datos
 del _Authorization Server_ y el _Resource Server_. 
-
-### ¿Cómo iniciar?
-
-Iniciar el servicio ZooKeeper 
-```bash
-bin/zookeeper-server-start.sh config/zookeeper.properties
-```
-
-Iniciar el broker
-
-```bash
-bin/kafka-server-start.sh config/server.properties
-```
-
-[!WARNING]
-> Es importante que este servicio sea el que inicia primero, para que el _Authorization Server_ se pueda conectar.
 
 
