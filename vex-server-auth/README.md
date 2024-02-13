@@ -8,16 +8,9 @@
 - [Variables de entorno](#variablesdeentorno)
 
 ## Database
-La base de datos utilizada es postgresql. Se puede crear un contenedor con la imagen de postgresql
-ejecutando el siguiente comando:
-```shell
-sudo docker run --name vex-auth-db -e POSTGRES_PASSWORD=secret_password -e POSTGRES_USER=db_user -e POSTGRES_DB=db_password -p 5342:5432 -d postgres
-```
-Según la configuración en el archivo `application.properties`, se deben crear variables de entorno para definir
-el host, puerto, user y password. Además, en el mismo archivo se configuró para que las tablas se creen automáticamente
-al iniciar el servicio.
-
-Se pueden agregar manualmente `roles` para luego asignarlos a los usuarios.
+La base de datos utilizada es postgresql 14.10. El archivo `docker-compose.yml` es quien se encarga de crear el contenedor con la base de datos y usuario indicados.
+El nombre de la base de datos a utilizar dentro de este servicio se debe indicar dentro del archivo `.env.api-db` en la carpeta _`vex-api`_, más especificamente en la
+variable de entorno `POSTGRES_MULTIPLE_DATABASES`.
 
 ## Client
 Permite trabajar con múltiples clientes, que pueden ser aplicaciones web o móviles. Estos clientes
@@ -120,8 +113,4 @@ En la página [JWT.io](https://jwt.io/) podemos decodificar el token de acceso y
 
 ## Variables de entorno
 Configurar las siguientes variables de entorno para la base de datos:
-- `DB_HOST`: indicar el host de la base de datos.
-- `DB_PORT`: indicar el puerto de la base de datos.
-- `DB_NAME`: indicar el nombre de la base de datos.
-- `DB_USER`: indicar el usuario de la base de datos.
-- `DB_PASSWORD`: indicar la contraseña de la base de datos.
+- `AUTH_KAFKA_SERVER`: indicar la URI del servidor apache kafka.
