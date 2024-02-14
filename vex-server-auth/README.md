@@ -8,22 +8,14 @@
 - [Variables de entorno](#variablesdeentorno)
 
 ## Database
-La base de datos utilizada es postgresql. Se puede crear un contenedor con la imagen de postgresql
-ejecutando el siguiente comando:
-```shell
-sudo docker run --name vex-auth-db -e POSTGRES_PASSWORD=secret_password -e POSTGRES_USER=db_user -e POSTGRES_DB=db_password -p 5342:5432 -d postgres
-```
-Según la configuración en el archivo `application.properties`, se deben crear variables de entorno para definir
-el host, puerto, user y password. Además, en el mismo archivo se configuró para que las tablas se creen automáticamente
-al iniciar el servicio.
-
-Se pueden agregar manualmente `roles` para luego asignarlos a los usuarios.
+La base de datos utilizada es postgresql 14.10. El archivo `docker-compose.yml` es quien se encarga de crear el contenedor con la base de datos y usuario indicados.
+El nombre de la base de datos a utilizar dentro de este servicio se debe indicar dentro del archivo `.env.api-db` en la carpeta _`vex-api`_, más especificamente en la
+variable de entorno `POSTGRES_MULTIPLE_DATABASES`.
 
 ## Client
 Permite trabajar con múltiples clientes, que pueden ser aplicaciones web o móviles. Estos clientes
 deberían ser administrados por el administrador del sistema. Para crear un nuevo cliente, se debe
-utilizar el endpoint `/oauth/client` con el método POST. El cuerpo de la petición debe ser un JSON
-con el siguiente formato:
+utilizar el endpoint `/client/create` con el método POST y el siguiente body:
 ```json
 {
   "clientId": "client",
@@ -43,14 +35,14 @@ String que indica las URIs de redirección que soporta el cliente. El campo `sco
 String que indica los alcances que soporta el cliente. El campo `requireProofKey` es un booleano que
 indica si el cliente requiere una clave de prueba.
 
-Para cada entrada del json tenemos una tabla donde se guardan los datos asociados al cliente.
+Los datos son guardados en la base de datos, 
 
 Además, se puede utilizar el endpoint `/client/{clientId}/update` con el método PUT para actualizar los clientes.
 El body es el mismo que el de la petición POST.
 
 ## User
 Permite trabajar con múltiples usuarios. Para crear un nuevo usuario, se debe utilizar el endpoint
-`/auth/create` con el método POST. El cuerpo de la petición debe ser un JSON con el siguiente formato:
+`/auth/create` con el método POSTy el siguiente body:
 ```json
 {
   "username": "user",
@@ -58,6 +50,12 @@ Permite trabajar con múltiples usuarios. Para crear un nuevo usuario, se debe u
   "roles": ["ROLE_USER"]
 }
 ```
+
+> [!WARNING]
+> Asegurarse de primero crear, por base de datos, los roles disponibles para cada usuario.
+> ```sql
+> INSERT INTO public.role (type) VALUES ('ROLE_USER');
+> ```
 Al crear un usuario, la contraseña se encripta utilizando BCrypt. El mismo queda almacenado en la tabla 'users'
 y sus roles en la tabla intermedia 'user_roles'.
 
@@ -120,8 +118,4 @@ En la página [JWT.io](https://jwt.io/) podemos decodificar el token de acceso y
 
 ## Variables de entorno
 Configurar las siguientes variables de entorno para la base de datos:
-- `DB_HOST`: indicar el host de la base de datos.
-- `DB_PORT`: indicar el puerto de la base de datos.
-- `DB_NAME`: indicar el nombre de la base de datos.
-- `DB_USER`: indicar el usuario de la base de datos.
-- `DB_PASSWORD`: indicar la contraseña de la base de datos.
+- `AUTH_KAFKA_SERVER`: indicar la URI del servidor apache kafka.

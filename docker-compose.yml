@@ -2,22 +2,69 @@ version: "3.8"
 
 services:
   postgres:
+    container_name: vex-postgres
     image: postgres:14.10
     restart: always
+    volumes:
+      - ../vex/vex-db/init-databases:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
-    environment:
-      - DATABASE_HOST=127.0.0.1
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=vex
+      - "5430:5432"
+    env_file: 
+      - vex-db/.env.api-db
 
   pgadmin:
+    container_name: vex-pgadmin
     image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "vex@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "vex"
+    env_file:
+      - vex-db/.env.pgadmin
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
         - postgres
+
+  zookeeper:
+    container_name: vex-zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    env_file:
+      - .env.zookeeper
+    ports:
+      - 22181:2181
+  
+  kafka:
+    container_name: vex-kafka
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    env_file:
+      - .env.kafka
+
+  vex-server-auth:
+    container_name: vex-server-auth
+    build:
+      context: ./vex-server-auth
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    env_file:
+      - vex-server-auth/.env.auth
+    depends_on:
+      - postgres
+      - kafka
+      - zookeeper
+
+  vex-api:
+    container_name: vex-api
+    build:
+      context: ./vex-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - vex-api/.env.api
+    depends_on:
+      - postgres
+      - kafka
+      - zookeeper
+      - vex-server-auth

@@ -19,7 +19,6 @@ public class Personal {
     @Id
     @Column(value = "personal_id")
     private Integer personalId;
-
     @Column(value = "username")
     private String username;
     @Column(value = "created_at")
