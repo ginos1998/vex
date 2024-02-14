@@ -11,6 +11,8 @@ Este repositorio contiene servicios desarrollados con Spring Boot 3.2.0 y Java 1
 Por un lado, tenemos un servidor de autenticación y autorización de usuarios, y, 
 por otro lado, una API RESTful. También, se utilizó postgresql como base de datos.
 
+![vex-arch](https://excalidraw.com/#json=UVpx1LXT29qFznSRFE6VU,Lw_idvqnDXm5xQt_4SXb7Q)
+
 ## Authorization Server
 Este servicio es el encargado de autenticar y autorizar a los usuarios. Para ello,
 se utilizó el protocolo OAuth2 con JWT como token de acceso y postgresql como base de datos.
