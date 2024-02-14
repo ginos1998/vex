@@ -39,3 +39,32 @@ services:
       - 29092:29092
     env_file:
       - .env.kafka
+
+  vex-server-auth:
+    container_name: vex-server-auth
+    build:
+      context: ./vex-server-auth
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    env_file:
+      - vex-server-auth/.env.auth
+    depends_on:
+      - postgres
+      - kafka
+      - zookeeper
+
+  vex-api:
+    container_name: vex-api
+    build:
+      context: ./vex-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - vex-api/.env.api
+    depends_on:
+      - postgres
+      - kafka
+      - zookeeper
+      - vex-server-auth
