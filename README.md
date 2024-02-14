@@ -6,14 +6,19 @@
 - [Resource Server](#resource-server)
 - [Resource Server Database](#resource-server-database)
 - [Iniciar los contenedores](#iniciar-los-contenedores)
+- [¿Qué sigue?](#qué-sigue)
 
 ## Introduction
-Este repositorio contiene servicios desarrollados con Spring Boot 3.2.0 y Java 17.
-Por un lado, tenemos un servidor de autenticación y autorización de usuarios y, 
+Este repositorio fue creado con fines de aprendizaje sobre creación y despliegue de contenedores, y otras nuevas tecnologías.
+Se han desarrollado servicios con Spring Boot 3.2.0 y Java 17. Por un lado, tenemos un servidor de autenticación y autorización de usuarios y, 
 por otro lado, una API RESTful. La base de datos utilizada para ambos servicios es postgres.
 
 > [!NOTE]
 > El archivo `docker-compose.yml` se encarga de crear los contenedores para cada servicio detallados a continuación.
+
+<p align="center">
+  <img src="https://github.com/ginos1998/vex/blob/develop/images/vex-arch.png" width="70%" height="70%">
+</p>
 
 ## Authorization Server
 Este servicio es el encargado de autenticar y autorizar a los usuarios. Para ello,
@@ -73,5 +78,6 @@ Una vez se hayan definido todas las variables, podemos crear los contenedores
 sudo docker compose up -d
 ```
 
-
+## ¿Qué sigue?
+El próximo objetivo en desarrollo es agregar una `api-gateway` con Spring Cloud y profundizar más sobre Apache Kafka.
 
