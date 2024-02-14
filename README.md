@@ -20,8 +20,6 @@ por otro lado, una API RESTful. La base de datos utilizada para ambos servicios 
   <img src="https://github.com/ginos1998/vex/blob/develop/images/vex-arch.png" width="70%" height="70%">
 </p>
 
-![vex-arch](https://excalidraw.com/#json=UVpx1LXT29qFznSRFE6VU,Lw_idvqnDXm5xQt_4SXb7Q)
-
 ## Authorization Server
 Este servicio es el encargado de autenticar y autorizar a los usuarios. Para ello,
 se utilizó el protocolo OAuth2 con JWT como token de acceso y postgresql como base de datos.
