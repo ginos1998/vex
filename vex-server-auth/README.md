@@ -15,8 +15,7 @@ variable de entorno `POSTGRES_MULTIPLE_DATABASES`.
 ## Client
 Permite trabajar con múltiples clientes, que pueden ser aplicaciones web o móviles. Estos clientes
 deberían ser administrados por el administrador del sistema. Para crear un nuevo cliente, se debe
-utilizar el endpoint `/oauth/client` con el método POST. El cuerpo de la petición debe ser un JSON
-con el siguiente formato:
+utilizar el endpoint `/client/create` con el método POST y el siguiente body:
 ```json
 {
   "clientId": "client",
@@ -36,14 +35,14 @@ String que indica las URIs de redirección que soporta el cliente. El campo `sco
 String que indica los alcances que soporta el cliente. El campo `requireProofKey` es un booleano que
 indica si el cliente requiere una clave de prueba.
 
-Para cada entrada del json tenemos una tabla donde se guardan los datos asociados al cliente.
+Los datos son guardados en la base de datos, 
 
 Además, se puede utilizar el endpoint `/client/{clientId}/update` con el método PUT para actualizar los clientes.
 El body es el mismo que el de la petición POST.
 
 ## User
 Permite trabajar con múltiples usuarios. Para crear un nuevo usuario, se debe utilizar el endpoint
-`/auth/create` con el método POST. El cuerpo de la petición debe ser un JSON con el siguiente formato:
+`/auth/create` con el método POSTy el siguiente body:
 ```json
 {
   "username": "user",
@@ -51,6 +50,12 @@ Permite trabajar con múltiples usuarios. Para crear un nuevo usuario, se debe u
   "roles": ["ROLE_USER"]
 }
 ```
+
+> [!WARNING]
+> Asegurarse de primero crear, por base de datos, los roles disponibles para cada usuario.
+> ```sql
+> INSERT INTO public.role (type) VALUES ('ROLE_USER');
+> ```
 Al crear un usuario, la contraseña se encripta utilizando BCrypt. El mismo queda almacenado en la tabla 'users'
 y sus roles en la tabla intermedia 'user_roles'.
 
