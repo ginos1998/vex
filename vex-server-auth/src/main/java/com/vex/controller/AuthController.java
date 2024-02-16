@@ -20,9 +20,4 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(userService.createUser(dto));
     }
-
-    @GetMapping("/demo")
-    public ResponseEntity<String> demo(){
-        return ResponseEntity.ok("Hello World");
-    }
 }

@@ -14,7 +14,7 @@ spring:
             - PrefixPath=/api/v1
             - AddRequestHeader=Vex-Application, vex
         - id: auth-server
-          uri: http://localhost:9000
+          uri: ${ISSUER_URI}
           predicates:
             - Path=/secret/**
           filters:

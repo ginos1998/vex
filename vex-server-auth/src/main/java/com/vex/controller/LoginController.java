@@ -27,10 +27,7 @@ public class LoginController {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
         );
-//        http.logout().logoutSuccessUrl("login?logout")
-//                .deleteCookies("JSESSIONID")
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true);
+
         return "login?logout";
     }
 
