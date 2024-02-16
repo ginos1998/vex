@@ -46,6 +46,7 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain authSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(Customizer.withDefaults());
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
             .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
@@ -58,16 +59,13 @@ public class SecurityConfig {
         http.oauth2ResourceServer(
             oa2 -> oa2.jwt(Customizer.withDefaults())
         );
-        // http.with(new FederatedIdentityConfigurer(), Customizer.withDefaults());
-        //http.apply(new FederatedIdentityConfigurer());
         return http.build();
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
-//        FederatedIdentityConfigurer federatedIdentityConfigurer = new FederatedIdentityConfigurer()
-//            .oauth2UserHandler(new UserRepositoryOAuth2UserHandler());
+        http.cors(Customizer.withDefaults());
         http
             // public endpoints
             .authorizeHttpRequests(authorize ->
@@ -78,8 +76,6 @@ public class SecurityConfig {
             // Form login handles the redirect to the login page from the
             // authorization server filter chain
             .formLogin(Customizer.withDefaults());
-                //.with(federatedIdentityConfigurer, Customizer.withDefaults());
-            //.apply(federatedIdentityConfigurer);
         http.csrf(
             csrf -> csrf.ignoringRequestMatchers(
                 "/auth/**", "/client/**"
