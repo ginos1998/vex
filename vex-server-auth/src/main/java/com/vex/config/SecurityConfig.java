@@ -46,6 +46,7 @@ public class SecurityConfig {
 
     private static final long ID_TOKEN_EXPIRATION_SECONDS = 3600; // 1 hour
     private static final long ACCESS_TOKEN_EXPIRATION_SECONDS = 1800; // 30 minutes
+    public static final long REFRESH_TOKEN_EXPIRATION_SECONDS = 3600; // 1 hour
 
     @Bean
     @Order(1)
@@ -105,6 +106,11 @@ public class SecurityConfig {
                 Set<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
                 context.getClaims().claim("roles", roles).claim("username", principal.getName());
                 context.getClaims().expiresAt(Instant.now().plusSeconds(ACCESS_TOKEN_EXPIRATION_SECONDS));
+            }
+
+            if(context.getTokenType().getValue().equals("refresh_token")){
+                context.getClaims().claim("token_type", "refresh token");
+                context.getClaims().expiresAt(Instant.now().plusSeconds(REFRESH_TOKEN_EXPIRATION_SECONDS));
             }
         };
     }
