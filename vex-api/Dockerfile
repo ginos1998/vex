@@ -9,8 +9,6 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 
-WORKDIR /app
-
 COPY --from=build /app/target/*.jar api.jar
 
 CMD ["java", "-jar", "api.jar"]

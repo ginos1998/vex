@@ -8,6 +8,7 @@ import com.vex.exceptions.ExceptionType;
 import com.vex.exceptions.ServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -45,6 +46,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
+
+    @Value("${vex.issuer.uri}")
+    private String issuerUri;
 
     private static final long ID_TOKEN_EXPIRATION_SECONDS = 3600; // 1 hour
     private static final long ACCESS_TOKEN_EXPIRATION_SECONDS = 1800; // 30 minutes
@@ -139,7 +143,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(){
-        return AuthorizationServerSettings.builder().issuer("http://localhost:9000").build();
+        return AuthorizationServerSettings.builder().issuer(issuerUri).build();
     }
 
     @Bean

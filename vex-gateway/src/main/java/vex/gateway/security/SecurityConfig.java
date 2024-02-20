@@ -1,4 +1,4 @@
-package com.vex.security;
+package vex.gateway.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

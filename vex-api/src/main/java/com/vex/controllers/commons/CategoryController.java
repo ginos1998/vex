@@ -5,6 +5,8 @@ import com.vex.delegates.commons.interfaces.CategoryDelegate;
 import com.vex.exceptions.ServiceException;
 import com.vex.models.dtos.CategoryDTO;
 import com.vex.models.dtos.SubCategoryDTO;
+import com.vex.utils.JwtParam;
+import com.vex.utils.JwtValues;
 import com.vex.utils.Views;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +32,9 @@ public class CategoryController {
     private final CategoryDelegate categoryDelegate;
 
     @GetMapping("/test")
-    public Mono<String> test() {
-        return Mono.just("Ok");
+    public Mono<String> test(org.springframework.http.server.reactive.ServerHttpRequest request) throws ServiceException {
+        String ok = "hi " + JwtValues.getParam(JwtParam.USERNAME, request.getHeaders().getFirst("Authorization")) + "!";
+        return Mono.just(ok);
     }
 
     @GetMapping()

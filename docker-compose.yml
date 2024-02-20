@@ -54,6 +54,18 @@ services:
       - kafka
       - zookeeper
 
+  vex-gateway:
+    container_name: vex-gateway
+    build:
+      context: ./vex-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    env_file:
+      - vex-gateway/.env.gateway
+    depends_on:
+      - vex-server-auth
+
   vex-api:
     container_name: vex-api
     build:
@@ -64,7 +76,4 @@ services:
     env_file:
       - vex-api/.env.api
     depends_on:
-      - postgres
-      - kafka
-      - zookeeper
-      - vex-server-auth
+      - vex-gateway
