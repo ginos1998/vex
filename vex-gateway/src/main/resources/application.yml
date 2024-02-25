@@ -1,7 +1,6 @@
 server:
   port: 8082
 
-
 spring:
   security:
     oauth2:
@@ -19,6 +18,14 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/api/v1
+            - AddRequestHeader=Vex-Application, vex
+        - id: swagger
+          uri: ${VEX_API}
+          predicates:
+            - Path=/api/**, /v3/api-docs/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/api
             - AddRequestHeader=Vex-Application, vex
         - id: auth-server
           uri: ${ISSUER_URI}

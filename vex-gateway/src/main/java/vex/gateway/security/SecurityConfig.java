@@ -15,8 +15,22 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        http.authorizeExchange(auth -> auth.anyExchange().authenticated())
+        // configure no authenticated endpoints
+        http.authorizeExchange(auth ->
+            auth.pathMatchers(
+                // HEALTH CHECK
+                    "/vex/health",
+
+                // SWAGGER UI: http://localhost:8082/vex/swagger-ui.html
+                    "/vex/swagger-ui.html/**",
+                    "/api/v1/webjars/**",
+                    "/v3/api-docs/**",
+                    "/api/api-docs/**"
+                ).permitAll()
+                .anyExchange().authenticated()
+        )
             .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
+
         return http.build();
     }
 
