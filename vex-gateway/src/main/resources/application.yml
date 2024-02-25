@@ -1,0 +1,44 @@
+server:
+  port: 8082
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+
+  cloud:
+    gateway:
+      routes:
+        - id: resource-server
+          uri: ${VEX_API}
+          predicates:
+            - Path=/vex/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/api/v1
+            - AddRequestHeader=Vex-Application, vex
+        - id: swagger
+          uri: ${VEX_API}
+          predicates:
+            - Path=/api/**, /v3/api-docs/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/api
+            - AddRequestHeader=Vex-Application, vex
+        - id: auth-server
+          uri: ${ISSUER_URI}
+          predicates:
+            - Path=/secret/**
+          filters:
+            - StripPrefix=1
+
+# configure logging
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.netty: DEBUG

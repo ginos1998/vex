@@ -4,8 +4,11 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.vex.exceptions.ExceptionType;
+import com.vex.exceptions.ServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -34,6 +37,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,9 +47,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SecurityConfig {
 
+    @Value("${vex.issuer.uri}")
+    private String issuerUri;
+
+    private static final long ID_TOKEN_EXPIRATION_SECONDS = 3600; // 1 hour
+    private static final long ACCESS_TOKEN_EXPIRATION_SECONDS = 1800; // 30 minutes
+    public static final long REFRESH_TOKEN_EXPIRATION_SECONDS = 3600; // 1 hour
+
     @Bean
     @Order(1)
     public SecurityFilterChain authSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(Customizer.withDefaults());
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
             .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
@@ -58,16 +70,13 @@ public class SecurityConfig {
         http.oauth2ResourceServer(
             oa2 -> oa2.jwt(Customizer.withDefaults())
         );
-        // http.with(new FederatedIdentityConfigurer(), Customizer.withDefaults());
-        //http.apply(new FederatedIdentityConfigurer());
         return http.build();
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
-//        FederatedIdentityConfigurer federatedIdentityConfigurer = new FederatedIdentityConfigurer()
-//            .oauth2UserHandler(new UserRepositoryOAuth2UserHandler());
+        http.cors(Customizer.withDefaults());
         http
             // public endpoints
             .authorizeHttpRequests(authorize ->
@@ -78,8 +87,6 @@ public class SecurityConfig {
             // Form login handles the redirect to the login page from the
             // authorization server filter chain
             .formLogin(Customizer.withDefaults());
-                //.with(federatedIdentityConfigurer, Customizer.withDefaults());
-            //.apply(federatedIdentityConfigurer);
         http.csrf(
             csrf -> csrf.ignoringRequestMatchers(
                 "/auth/**", "/client/**"
@@ -98,11 +105,18 @@ public class SecurityConfig {
             Authentication principal = context.getPrincipal();
             if(context.getTokenType().getValue().equals("id_token")){
                 context.getClaims().claim("token_type", "id token");
+                context.getClaims().expiresAt(Instant.now().plusSeconds(ID_TOKEN_EXPIRATION_SECONDS));
             }
             if(context.getTokenType().getValue().equals("access_token")){
                 context.getClaims().claim("token_type", "access token");
                 Set<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
                 context.getClaims().claim("roles", roles).claim("username", principal.getName());
+                context.getClaims().expiresAt(Instant.now().plusSeconds(ACCESS_TOKEN_EXPIRATION_SECONDS));
+            }
+
+            if(context.getTokenType().getValue().equals("refresh_token")){
+                context.getClaims().claim("token_type", "refresh token");
+                context.getClaims().expiresAt(Instant.now().plusSeconds(REFRESH_TOKEN_EXPIRATION_SECONDS));
             }
         };
     }
@@ -129,7 +143,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(){
-        return AuthorizationServerSettings.builder().issuer("http://localhost:9000").build();
+        return AuthorizationServerSettings.builder().issuer(issuerUri).build();
     }
 
     @Bean
@@ -138,27 +152,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() {
+    public JWKSource<SecurityContext> jwkSource() throws ServerException {
         RSAKey rsaKey = generateRSAKey();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
-    private RSAKey generateRSAKey() {
+    private RSAKey generateRSAKey() throws ServerException {
         KeyPair keyPair = generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
     }
 
-    private KeyPair generateKeyPair() {
+    private KeyPair generateKeyPair() throws ServerException {
         KeyPair keyPair;
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
             generator.initialize(2048);
             keyPair = generator.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new ServerException(e, ExceptionType.ERROR_GENERATING_KEY_PAIR, e.getMessage());
         }
         return keyPair;
     }

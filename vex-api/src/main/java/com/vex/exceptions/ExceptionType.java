@@ -17,7 +17,10 @@ public enum ExceptionType {
     ERROR_GETTING_ALL_CATEGORIES("Error getting all categories", "Error getting all categories: %s", "1011", HttpStatus.INTERNAL_SERVER_ERROR),
     ERROR_SAVING_CATEGORY("Error saving category", "Error saving category: %s", "1012", HttpStatus.INTERNAL_SERVER_ERROR),
     ERROR_UPDATING_CATEGORY("Error updating category", "Error updating category id=%s values=%s", "1013", HttpStatus.INTERNAL_SERVER_ERROR),
-    ERROR_DELETING_CATEGORY("Error deleting category", "Error deleting category id=%s", "1014", HttpStatus.INTERNAL_SERVER_ERROR),;
+    ERROR_DELETING_CATEGORY("Error deleting category", "Error deleting category id=%s", "1014", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // other
+    ERROR_GETTING_PARAM_FROM_JWT("Error getting param from JWT token", "Error getting param from JWT token: %s", "1020", HttpStatus.INTERNAL_SERVER_ERROR),;
 
     private final String message;
     private final String description;
