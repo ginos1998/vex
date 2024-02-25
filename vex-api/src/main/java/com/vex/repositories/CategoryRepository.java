@@ -8,6 +8,6 @@ import reactor.core.publisher.Mono;
 public interface CategoryRepository {
     Flux<CategoryDTO> getCategories(Object ...args);
     Mono<CategoryDTO> saveNewCategory(CategoryDTO category) throws ServiceException;
-    Mono<CategoryDTO> updateCategory(Integer categoryId, CategoryDTO category) throws ServiceException;
-    Mono<Void> deleteCategory(Integer categoryId) throws ServiceException;
+    Mono<CategoryDTO> updateCategory(Integer categoryId, CategoryDTO category);
+    Mono<Void> deleteCategory(Integer categoryId);
 }

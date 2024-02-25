@@ -1,5 +1,6 @@
 package com.vex.models.entities;
 
+import com.vex.utils.DefaultMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,10 +29,11 @@ public class Category {
     private String available;
 
     public static Map<String, Object> getBindValues(Object ...args) {
-        return Map.of(
-                "category_id", args[0] == null ? 0 : args[0],
-                "category_name", args[1] == null ? "" : args[1]
+        Map<Integer, Map<String, Object>> defaultValues = Map.of(
+                0, Map.of("category_id", 0),
+                1, Map.of( "category_name", "")
         );
+        return DefaultMapper.getInstance().getBindValues(defaultValues, args);
     }
 
 

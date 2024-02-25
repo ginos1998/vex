@@ -26,6 +26,13 @@ public class ServiceException extends Exception {
 
     }
 
+    public ServiceException(ExceptionType exceptionType, Object... args) {
+        super(String.format(exceptionType.getMessage(), args));
+        description = String.format(exceptionType.getDescription(), args);
+        exceptionCause = null;
+        this.exceptionType = exceptionType;
+    }
+
     public ServiceError getServiceError() {
         return new ServiceError(
                 exceptionType.getMessage(),

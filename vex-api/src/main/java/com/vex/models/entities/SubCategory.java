@@ -1,6 +1,7 @@
 package com.vex.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.vex.utils.DefaultMapper;
 import com.vex.utils.Views;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,10 +37,11 @@ public class SubCategory {
     private String available;
 
     public static Map<String, Object> getBindValues(Object ...args) {
-        return Map.of(
-                "category_id", args[0] == null ? 0 : args[0],
-                "sub_category_name", args[1] == null ? "" : args[1]
+        Map<Integer, Map<String, Object>> defaultValues = Map.of(
+                0, Map.of("category_id", 0),
+                1, Map.of( "sub_category_name", "")
         );
+        return DefaultMapper.getInstance().getBindValues(defaultValues, args);
     }
 
 }

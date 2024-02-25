@@ -3,14 +3,11 @@ LABEL authors="ginos"
 
 WORKDIR /app
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
 COPY src ./src
-
-RUN mvn clean package -DskipTests
-
+RUN mvn package -DskipTests
 FROM openjdk:17-jdk-slim
-
 WORKDIR /app
-
 COPY --from=build /app/target/*.jar gateway.jar
 
 CMD ["java", "-jar", "gateway.jar"]
