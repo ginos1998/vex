@@ -2,15 +2,19 @@
 
 ## RESTful API
 La API simula ser un micro servicio de un e-commerce. Permite trabajar con múltiples usuarios, productos,
-marcas, categorías, etc. Para ello, se utilizó WebFlux. La base de datos utilizada es postgresql y 
-se agregó la dependencia para trabajar con R2DBC. Para conocer los endpoints disponibles
-se agrego la dependencia de _springfox-swagger_. Dicha documentacion se encuentra en `/swagger-ui.html`.
+marcas, categorías, etc. Se utilizó WebFlux para manejar las request y responses. La base de datos utilizada es 
+PostgreSQL y se agregó la dependencia para trabajar con R2DBC. Para conocer los endpoints disponibles
+se agregó la dependencia de _springfox-swagger_. Dicha documentación se encuentra en `/swagger-ui.html`.
 
-Ademas, funciona como _consumidor_ del servicio de _apache-kafka_: cuando se crean usuarios, llega una notificacion
+<p align="center">
+  <img src="https://github.com/ginos1998/vex/blob/develop/images/swagger-demo.png" width="70%" height="70%">
+</p>
+
+Además, funciona como _consumidor_ del servicio de _apache-kafka_: cuando se crean usuarios, llega una notificación
 con el mail del mismo para crear un personal. Este evento es creado por el _vex-server-auth_. 
 
-Tambien se han realizado configuraciones de _cors_ de tal manera que el origin habilitado es la api-gateway, quien ademas agrega
-los headers necesarios.
+También se han realizado configuraciones de _cors_ de tal manera que el origin habilitado es la api-gateway, 
+quien además agrega los headers necesarios.
 
 ## Database
 La base de datos utilizada es postgresql 14.10. El archivo `docker-compose.yml` es quien se encarga de crear el contenedor con la base de datos y usuario indicados. 
@@ -32,3 +36,10 @@ Se deben indicar las variables relacionadas a cada servicio:
 
 > [!WARNING]
 > El host de cada servicio depende donde esten desplegadas las respectivas aplicaciones. Si estan dockerizadas, el host es el nombre del docker.
+
+## Docker
+El servicio se encuentra dockerizado. Para levantar el contenedor, se debe ejecutar el siguiente comando:
+
+```bash
+docker-compose start vex-api
+```
