@@ -17,8 +17,17 @@ por otro lado, una API RESTful. La base de datos utilizada para ambos servicios 
 > El archivo `docker-compose.yml` se encarga de crear los contenedores para cada servicio detallados a continuación.
 
 <p align="center">
-  <img src="https://github.com/ginos1998/vex/blob/develop/images/vex-arch.png" width="70%" height="70%">
+  <img src="https://github.com/ginos1998/vex/blob/develop/images/vex-arch.png">
 </p>
+
+## Gateway
+
+Este servicio es el encargado de manejar las peticiones de los clientes. Se encarga de redirigir 
+las peticiones a los servicios correspondientes y agregar la información necesaria en las request
+para que el _Resource Server_ acepte las peticiones. Además, se encarga de filtrar las peticiones 
+para que sean validadas por el _Authorization Server_.
+
+Más detalles en [Gateway](https://github.com/ginos1998/vex/tree/develop/vex-gateway)
 
 ## Authorization Server
 Este servicio es el encargado de autenticar y autorizar a los usuarios. Para ello,
@@ -47,9 +56,11 @@ usuario correspondiente, pero en bases de datos distintas. Esto con el fin de ma
 del _Authorization Server_ y el _Resource Server_.
 
 ## Iniciar los contenedores
-Como se menciono anteriormente, el archivo `docker-compose.yml` se encarga de crear los contenedores para cada servicio.
+Como se mencionó anteriormente, el archivo `docker-compose.yml` se encarga de crear los contenedores para cada servicio.
 Previamente es importante haber creado los archivos `.env` y definido dentro de ellos las variables de entorno.
 
+- `.env.gateway`: los detalles se encuentran en [Gateway](https://github.com/ginos1998/vex/tree/develop/vex-gateway).
+- `.env.auth`: los detalles se encuentran en [Authorization Server](https://github.com/ginos1998/vex/tree/develop/vex-server-auth).
 - `.env.vex-db`: los detalles se encuentran en [Resource Server](https://github.com/ginos1998/vex/tree/develop/vex-api/README.md).
 - `.env.pgadmin`: este archivo se debe crear dentro de la carpeta `vex-db` y debe tener las siguientes variables de entorno
 ```bash
