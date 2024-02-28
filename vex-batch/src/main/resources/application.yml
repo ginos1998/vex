@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+# configure postgresql database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/vex
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
