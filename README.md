@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Gateway](#gateway)
 - [Authorization Server](#authorization-server)
 - [Resource Server](#resource-server)
 - [Resource Server Database](#resource-server-database)
@@ -90,5 +91,5 @@ sudo docker compose up -d
 ```
 
 ## ¿Qué sigue?
-El próximo objetivo en desarrollo es agregar una `api-gateway` con Spring Cloud y profundizar más sobre Apache Kafka.
+El próximo objetivo en desarrollo es agregar un microservicio para procesos batch y mejorar la apigateway con más funcionalidades, como monitoreo de requests.
 
