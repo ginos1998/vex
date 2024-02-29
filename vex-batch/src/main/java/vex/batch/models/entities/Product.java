@@ -18,13 +18,13 @@ public class Product {
     @Column(name = "product_id")
     private Integer productId;
 
-    @Column(name = "product_name")
+    @Column(name = "name")
     private String productName;
 
     @Column(name = "short_name")
     private String shortName;
 
-    @Column(name = "product_price")
+    @Column(name = "price")
     private Double productPrice;
 
     @Column(name = "created_at")

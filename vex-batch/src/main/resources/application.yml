@@ -9,8 +9,6 @@ spring:
     password: root
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: create-drop
     show-sql: false
     properties:
       hibernate:
@@ -19,7 +17,7 @@ spring:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   batch:
-    jdbc:
-      initialize-schema: always
     job:
       enabled: false
+#    jdbc:
+#      initialize-schema: always

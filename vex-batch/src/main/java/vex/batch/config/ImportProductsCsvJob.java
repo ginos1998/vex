@@ -1,5 +1,6 @@
 package vex.batch.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -7,13 +8,9 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.data.RepositoryItemWriter;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,31 +19,45 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import vex.batch.models.entities.Product;
-import vex.batch.repository.ProductRepository;
+import vex.batch.readers.impl.ProductCsvReaderImpl;
+import vex.batch.writers.ProductItemWriter;
 
 @Configuration
+@RequiredArgsConstructor
 @Slf4j
 public class ImportProductsCsvJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-    private final ProductRepository productRepository;
+    private final ProductItemWriter productItemWriter;
+    private final ProductCsvReaderImpl productCsvReaderImpl;
 
-    public ImportProductsCsvJob(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                                ProductRepository productRepository) {
-        this.jobRepository = jobRepository;
-        this.transactionManager = transactionManager;
-        this.productRepository = productRepository;
-    }
+
+//    @Bean
+//    @StepScope
+//    public FlatFileItemReader<Product> reader(@Value("#{jobParameters['csvFilePath']}") String filePath) {
+//        return new FlatFileItemReaderBuilder<Product>()
+//            .name(Reader.PRODUCT_ITEM_READER.name())
+//            .resource(new PathResource(filePath))
+//            .linesToSkip(1)
+//            .lineMapper(lineMapper())
+//            .build();
+//    }
 
     @Bean
     @StepScope
-    public FlatFileItemReader<Product> reader(@Value("#{jobParameters['csvFilePath']}") String filePath) {
-        return new FlatFileItemReaderBuilder<Product>()
-            .name(Reader.PRODUCT_ITEM_READER.name())
-            .resource(new ClassPathResource(filePath))
-            .linesToSkip(1)
-            .lineMapper(lineMapper())
-            .build();
+    public ItemReader<Product> reader(@Value("#{jobParameters['csvFilePath']}") String filePath) throws Exception {
+        log.info("Reading file: {}", filePath);
+        log.info("Reader is " + ((productCsvReaderImpl == null) ? "null" : "not null"));
+        assert productCsvReaderImpl != null;
+        productCsvReaderImpl.setResourceFile(new ClassPathResource(filePath));
+        productCsvReaderImpl.initialize();
+        return productCsvReaderImpl;
+    }
+
+    @Bean
+    public ItemWriter<Product> writer() {
+        productCsvReaderImpl.closeFile();
+        return productItemWriter;
     }
 
     @Bean
@@ -55,15 +66,7 @@ public class ImportProductsCsvJob {
     }
 
     @Bean
-    public RepositoryItemWriter<Product> writer() {
-        RepositoryItemWriter<Product> itemWriter = new RepositoryItemWriter<>();
-        itemWriter.setRepository(productRepository);
-        itemWriter.setMethodName("save");
-        return itemWriter;
-    }
-
-    @Bean
-    public Step importProductsCsvStep() {
+    public Step importProductsCsvStep() throws Exception {
         int chunkSize = 20;
         return new StepBuilder("importProductsCsvStep", jobRepository)
             .<Product, Product>chunk(chunkSize, transactionManager)
@@ -82,24 +85,37 @@ public class ImportProductsCsvJob {
     }
 
     @Bean
-    public Job importProductsCsv() {
+    public Job importProductsCsv() throws Exception {
         return new JobBuilder(Jobs.IMPORT_PRODUCT_CSV_JOB.getName(), jobRepository)
             .start(importProductsCsvStep())
+            .next(cleanUpJobStep())
             .build();
     }
 
-    private LineMapper<Product> lineMapper() {
-        DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-        BeanWrapperFieldSetMapper<Product> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-
-        lineTokenizer.setDelimiter(",");
-        lineTokenizer.setStrict(false);
-        lineTokenizer.setNames(Product.getCsvHeaders());
-        fieldSetMapper.setTargetType(Product.class);
-        lineMapper.setLineTokenizer(lineTokenizer);
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-
-        return lineMapper;
+    @Bean
+    public Step cleanUpJobStep() {
+        return new StepBuilder("cleanUpJobStep", jobRepository)
+            .tasklet((contribution, chunkContext) -> {
+                log.info("Clean up job step");
+                productCsvReaderImpl.closeFile();
+                productCsvReaderImpl.close();
+                return RepeatStatus.FINISHED;
+            }, transactionManager)
+            .build();
     }
+
+//    private LineMapper<Product> lineMapper() {
+//        DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
+//        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
+//        BeanWrapperFieldSetMapper<Product> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+//
+//        lineTokenizer.setDelimiter(",");
+//        lineTokenizer.setStrict(false);
+//        lineTokenizer.setNames(Product.getCsvHeaders());
+//        fieldSetMapper.setTargetType(Product.class);
+//        lineMapper.setLineTokenizer(lineTokenizer);
+//        lineMapper.setFieldSetMapper(fieldSetMapper);
+//
+//        return lineMapper;
+//    }
 }
