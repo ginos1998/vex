@@ -12,13 +12,15 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table("brand")
-public class Brand {
+@Table("locality")
+public class Locality {
     @Id
-    @Column(value = "brand_id")
-    private Integer brandId;
-    @Column(value = "name")
+    @Column("locality_id")
+    private Integer localityId;
+
+    @Column("province_id")
+    private Integer provinceId;
+
+    @Column("name")
     private String name;
-    @Column(value = "active")
-    private String active;
 }

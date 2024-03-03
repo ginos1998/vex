@@ -9,21 +9,29 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table("supplier")
-public class Supplier {
+@Table("company")
+public class Company {
     @Id
-    @Column("supplier_id")
-    private Integer supplierId;
+    @Column("company_id")
+    private Integer companyId;
+
+    @Column("locality_id")
+    private Integer localityId;
 
     @Column("name")
     private String name;
 
-    @Column("cuit_cuil")
-    private String cuitCuil;
+    @Column("registered_name")
+    private String registeredName;
+
+    @Column("cuit")
+    private String cuit;
 
     @Column("address")
     private String address;
@@ -34,14 +42,11 @@ public class Supplier {
     @Column("email")
     private String email;
 
-    @Column("locality_id")
-    private Integer localityId;
-
-    @Column("branch_id")
-    private Integer branchId;
-
     @Column("active")
     private String active;
+
+    @Column("init_activity")
+    private Date initActivity;
 
     public boolean isActive() {
         return active.equals(Constants.CHAR_Y);

@@ -13,35 +13,27 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table("supplier")
-public class Supplier {
+@Table("personal_branch")
+public class PersonalBranch {
     @Id
-    @Column("supplier_id")
-    private Integer supplierId;
+    @Column("personal_branch_id")
+    private Integer personalBranchId;
 
-    @Column("name")
-    private String name;
-
-    @Column("cuit_cuil")
-    private String cuitCuil;
-
-    @Column("address")
-    private String address;
-
-    @Column("phone")
-    private String phone;
-
-    @Column("email")
-    private String email;
-
-    @Column("locality_id")
-    private Integer localityId;
+    @Column("personal_id")
+    private Integer personalId;
 
     @Column("branch_id")
     private Integer branchId;
 
     @Column("active")
     private String active;
+
+    @Column("admin")
+    private String admin;
+
+    public boolean isAdmin() {
+        return admin.equals(Constants.CHAR_Y);
+    }
 
     public boolean isActive() {
         return active.equals(Constants.CHAR_Y);
