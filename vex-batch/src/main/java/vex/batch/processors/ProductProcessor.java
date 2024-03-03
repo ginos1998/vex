@@ -1,4 +1,4 @@
-package vex.batch.config;
+package vex.batch.processors;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.lang.NonNull;

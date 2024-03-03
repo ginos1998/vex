@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import vex.batch.models.enums.Parameters;
 
 @RestController
 @RequestMapping("/products")
@@ -26,8 +27,8 @@ public class ProductController {
     public Long importProducts(@RequestParam("csvFilePath") String csvFilePath) {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
-                .addLong("startAt", System.currentTimeMillis())
-                .addString("csvFilePath", csvFilePath)
+                .addLong(Parameters.START_AT.name(), System.currentTimeMillis())
+                .addString(Parameters.INPUT_FILE_NAME.name(), csvFilePath)
                 .toJobParameters();
 
             return jobLauncher.run(job, jobParameters).getJobId();

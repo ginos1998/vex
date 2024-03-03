@@ -14,11 +14,14 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import vex.batch.models.entities.Product;
+import vex.batch.models.enums.Jobs;
+import vex.batch.models.enums.Steps;
+import vex.batch.processors.ProductProcessor;
 import vex.batch.readers.impl.ProductCsvReaderImpl;
 import vex.batch.writers.ProductItemWriter;
 
@@ -31,25 +34,12 @@ public class ImportProductsCsvJob {
     private final ProductItemWriter productItemWriter;
     private final ProductCsvReaderImpl productCsvReaderImpl;
 
-
-//    @Bean
-//    @StepScope
-//    public FlatFileItemReader<Product> reader(@Value("#{jobParameters['csvFilePath']}") String filePath) {
-//        return new FlatFileItemReaderBuilder<Product>()
-//            .name(Reader.PRODUCT_ITEM_READER.name())
-//            .resource(new PathResource(filePath))
-//            .linesToSkip(1)
-//            .lineMapper(lineMapper())
-//            .build();
-//    }
-
     @Bean
     @StepScope
-    public ItemReader<Product> reader(@Value("#{jobParameters['csvFilePath']}") String filePath) throws Exception {
+    public ItemReader<Product> reader(@Value("#{jobParameters['INPUT_FILE_NAME']}") String filePath) throws Exception {
         log.info("Reading file: {}", filePath);
-        log.info("Reader is " + ((productCsvReaderImpl == null) ? "null" : "not null"));
         assert productCsvReaderImpl != null;
-        productCsvReaderImpl.setResourceFile(new ClassPathResource(filePath));
+        productCsvReaderImpl.setResourceFile(new FileSystemResource(filePath));
         productCsvReaderImpl.initialize();
         return productCsvReaderImpl;
     }
@@ -68,7 +58,7 @@ public class ImportProductsCsvJob {
     @Bean
     public Step importProductsCsvStep() throws Exception {
         int chunkSize = 20;
-        return new StepBuilder("importProductsCsvStep", jobRepository)
+        return new StepBuilder(Steps.IMPORT_PRODUCT_CSV.name(), jobRepository)
             .<Product, Product>chunk(chunkSize, transactionManager)
             .reader(reader(""))
             .processor(processor())
@@ -94,7 +84,7 @@ public class ImportProductsCsvJob {
 
     @Bean
     public Step cleanUpJobStep() {
-        return new StepBuilder("cleanUpJobStep", jobRepository)
+        return new StepBuilder(Steps.CLEAN_UP.name(), jobRepository)
             .tasklet((contribution, chunkContext) -> {
                 log.info("Clean up job step");
                 productCsvReaderImpl.closeFile();
@@ -104,18 +94,4 @@ public class ImportProductsCsvJob {
             .build();
     }
 
-//    private LineMapper<Product> lineMapper() {
-//        DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
-//        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-//        BeanWrapperFieldSetMapper<Product> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-//
-//        lineTokenizer.setDelimiter(",");
-//        lineTokenizer.setStrict(false);
-//        lineTokenizer.setNames(Product.getCsvHeaders());
-//        fieldSetMapper.setTargetType(Product.class);
-//        lineMapper.setLineTokenizer(lineTokenizer);
-//        lineMapper.setFieldSetMapper(fieldSetMapper);
-//
-//        return lineMapper;
-//    }
 }

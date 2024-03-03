@@ -1,4 +1,4 @@
-package vex.batch.config;
+package vex.batch.models.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,5 +8,5 @@ import lombok.Getter;
 public enum Jobs {
     IMPORT_PRODUCT_CSV_JOB("importProductCsvJob");
 
-    private String name;
+    private final String name;
 }

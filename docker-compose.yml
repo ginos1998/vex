@@ -77,3 +77,15 @@ services:
       - vex-api/.env.api
     depends_on:
       - vex-gateway
+
+  vex-batch:
+    container_name: vex-batch
+    build:
+      context: ./vex-batch
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    env_file:
+      - vex-batch/.env.batch
+    depends_on:
+      - postgres

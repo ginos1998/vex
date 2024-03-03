@@ -1,19 +1,20 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT}
 
-# configure postgresql database
+resources:
+  folder: ${RESOURCES_FOLDER}
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5430/vex
-    username: root
-    password: root
+    url: jdbc:postgresql://${RESOURCE_DB_HOST}:${RESOURCE_DB_PORT}/${RESOURCE_DB_NAME}
+    username: ${RESOURCE_DB_USER}
+    password: ${RESOURCE_DB_PSW}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: false
     properties:
       hibernate:
         format_sql: true
-      database: postgresql
       database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   batch:

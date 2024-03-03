@@ -8,7 +8,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import vex.batch.config.Reader;
+import vex.batch.models.enums.Reader;
 import vex.batch.models.entities.Product;
 
 @Slf4j
