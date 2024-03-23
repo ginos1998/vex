@@ -14,8 +14,14 @@ import reactor.core.publisher.Mono;
 public class PersonalRepositoryImpl implements PersonalRepository {
 
     private final PersonalR2dbcRepository personalR2dbcRepository;
+
     @Override
     public Mono<Personal> create(Personal personal) {
         return personalR2dbcRepository.save(personal);
+    }
+
+    @Override
+    public Mono<Personal> findByUsernameAndEnabled(String username,Boolean enabled) {
+        return personalR2dbcRepository.findByUsernameAndEnabled(username, enabled);
     }
 }

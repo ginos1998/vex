@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>c927ab39-4f28-4458-829a-8732dc9fa4d5.DATABASE:vex</OriginalElement>
+  <nodes>
+    <node x="-61.880593636189104" y="319.94610810810804">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.provinces</node>
+    <node x="1523.3138297872342" y="501.0">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution_context</node>
+    <node x="1824.3138297872342" y="473.5">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution_params</node>
+    <node x="311.87946492236927" y="854.0587387387385">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.supplier</node>
+    <node x="996.8148748322792" y="1101.0505945945947">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.brand</node>
+    <node x="1564.8138297872342" y="-344.06291891891897">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_instance</node>
+    <node x="1248.3138297872342" y="994.7715315315315">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_step_execution_context</node>
+    <node x="612.6263297872342" y="1291.6877117117117">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.product</node>
+    <node x="442.0" y="395.0">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch</node>
+    <node x="1080.1771090665136" y="-30.849081081080953">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.__vex</node>
+    <node x="777.7941706919686" y="397.2159279279281">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal</node>
+    <node x="949.8148748322791" y="1577.4550630630629">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.sub_category</node>
+    <node x="-61.880593636189104" y="526.5495495495495">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.locality</node>
+    <node x="1284.3138297872342" y="316.63733333333334">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_step_execution</node>
+    <node x="1557.3138297872342" y="-87.0">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution</node>
+    <node x="964.8148748322791" y="1356.928936936937">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.category</node>
+    <node x="373.5" y="-30.849081081080953">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.company</node>
+    <node x="705.7941706919687" y="812.5723243243242">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal_branch</node>
+    <node x="789.7941706919686" y="127.21592792792808">c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.document_type</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.product" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch" relationship="REFERENCES">
+      <point x="-23.625" y="-227.0" />
+      <point x="683.5013297872342" y="1070.0" />
+      <point x="532.0" y="1070.0" />
+      <point x="0.0" y="157.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_instance" relationship="REFERENCES">
+      <point x="0.0" y="-157.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal_branch" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch" relationship="REFERENCES">
+      <point x="-55.500000000000114" y="-87.0" />
+      <point x="584.8429594594601" y="812.5723243243242" />
+      <point x="52.842959459460076" y="150.26021621621612" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.locality" relationship="REFERENCES">
+      <point x="-85.9572972972968" y="-83.93477477477472" />
+      <point x="279.0438918918918" y="468.0652252252253" />
+      <point x="279.0438918918918" y="594.4887207207208" />
+      <point x="174.66873969714422" y="594.4887207207208" />
+      <point x="174.66873969714422" y="594.4887207207207" />
+      <point x="16.119406363810896" y="594.4887207207207" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.product" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.brand" relationship="REFERENCES">
+      <point x="92.43853507763117" y="-211.1172612612611" />
+      <point x="1072.8148748322792" y="1307.5704504504506" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.product" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.category" relationship="REFERENCES">
+      <point x="90.2959765190725" y="-152.331099099099" />
+      <point x="1072.8148748322792" y="1366.3566126126127" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.supplier" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch" relationship="REFERENCES">
+      <point x="8.383345888442022" y="-140.99560360360329" />
+      <point x="404.2628108108113" y="781.5293693693693" />
+      <point x="478.7863108108114" y="781.5293693693693" />
+      <point x="-53.213689189188585" y="153.47405405405402" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.locality" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.provinces" relationship="REFERENCES">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="45.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution_params" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution" relationship="REFERENCES">
+      <point x="0.0" y="-86.5" />
+      <point x="1964.3138297872342" y="308.7778018018018" />
+      <point x="1733.3171171171173" y="308.7778018018018" />
+      <point x="69.50328732988305" y="155.36706306306309" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.product" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.supplier" relationship="REFERENCES">
+      <point x="-82.17998744489137" y="152.46572972972967" />
+      <point x="395.87946492236927" y="1671.1534414414414" />
+      <point x="0.0" y="143.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.document_type" relationship="REFERENCES">
+      <point x="0.0" y="-143.0" />
+      <point x="0.0" y="45.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.sub_category" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.category" relationship="REFERENCES">
+      <point x="0.0" y="-73.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.branch" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.company" relationship="REFERENCES">
+      <point x="-45.0" y="-157.0" />
+      <point x="0.0" y="157.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_step_execution_context" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_step_execution" relationship="REFERENCES">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="283.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.supplier" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.locality" relationship="REFERENCES">
+      <point x="-80.53283429173814" y="39.08778378378361" />
+      <point x="16.119406363810896" y="1036.146522522522" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution_context" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution" relationship="REFERENCES">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="157.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal_branch" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.personal" relationship="REFERENCES">
+      <point x="55.499999999999886" y="-87.0" />
+      <point x="0.0" y="143.0" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_step_execution" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.batch_job_execution" relationship="REFERENCES">
+      <point x="0.0" y="-283.0" />
+      <point x="1393.8138297872342" y="277.7107027027027" />
+      <point x="1592.9795315315316" y="277.7107027027027" />
+      <point x="-70.8342982557026" y="151.08194594594596" />
+    </edge>
+    <edge source="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.company" target="c927ab39-4f28-4458-829a-8732dc9fa4d5.TABLE:vex.public.locality" relationship="REFERENCES">
+      <point x="-109.65963963963918" y="-109.09427027027024" />
+      <point x="234.85004552424778" y="17.056648648648803" />
+      <point x="234.85004552424778" y="545.1973333333334" />
+      <point x="16.119406363810896" y="545.1973333333334" />
+      <point x="0.0" y="59.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.9334634015069967" showDependencies="false" x="601.9834279279285" y="656.1952072072072" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

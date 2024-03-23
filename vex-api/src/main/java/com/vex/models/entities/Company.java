@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -46,7 +46,7 @@ public class Company {
     private String active;
 
     @Column("init_activity")
-    private Date initActivity;
+    private LocalDateTime initActivity;
 
     public boolean isActive() {
         return active.equals(Constants.CHAR_Y);

@@ -1,9 +1,8 @@
-package com.vex.repositories;
+package com.vex.services.commons.interfaces;
 
 import com.vex.models.entities.Personal;
 import reactor.core.publisher.Mono;
 
-public interface PersonalRepository {
-    Mono<Personal> create(Personal personal);
+public interface PersonalService {
     Mono<Personal> findByUsernameAndEnabled(String username, Boolean enabled);
 }

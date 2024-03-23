@@ -23,7 +23,26 @@ public enum ExceptionType {
 
     // other
     ERROR_GETTING_PARAM_FROM_JWT("Error getting param from JWT token", "Error getting param from JWT token: %s", "1020", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_INPUT("Invalid input", "Invalid input: %s", "1021", HttpStatus.BAD_REQUEST),;
+    INVALID_INPUT("Invalid input", "Invalid input: %s", "1021", HttpStatus.BAD_REQUEST),
+
+    // company
+    ERROR_SAVING_COMPANY("Error saving company", "Error saving company: %s", "1030", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_UPDATING_COMPANY("Error updating company", "Error updating company: %s", "1031", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_DELETING_COMPANY("Error deleting company", "Error deleting company: %s", "1032", HttpStatus.INTERNAL_SERVER_ERROR),
+    COMPANY_NOT_FOUND("Company not found", "Company not found with id=%s", "1033", HttpStatus.NOT_FOUND),
+    ERROR_GETTING_COMPANY("Error getting company", "Error getting company: %s", "1034", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // branch
+    ERROR_SAVING_BRANCH("Error saving branch", "Error saving branch: %s", "1040", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_UPDATING_BRANCH("Error updating branch", "Error updating branch: %s", "1041", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_DELETING_BRANCH("Error deleting branch", "Error deleting branch: %s", "1042", HttpStatus.INTERNAL_SERVER_ERROR),
+    BRANCH_NOT_FOUND("Branch not found", "Branch not found with id=%s", "1043", HttpStatus.NOT_FOUND),
+    ERROR_GETTING_BRANCH("Error getting branch", "Error getting branch: %s", "1044", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_GETTING_BRANCHES_BY_COMPANY("Error getting branches by company", "Error getting branches by company: %s", "1045", HttpStatus.INTERNAL_SERVER_ERROR),
+    NO_BRANCHES_FOUND("No branches found", "No branches found for company id=%s", "1046", HttpStatus.NOT_FOUND),
+
+    // personal
+    PERSONAL_NOT_FOUND("Personal not found", "Personal not found: %s", "1100", HttpStatus.NOT_FOUND),;
 
     private final String message;
     private final String description;

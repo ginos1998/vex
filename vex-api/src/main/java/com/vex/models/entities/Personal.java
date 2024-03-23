@@ -8,7 +8,7 @@ import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +22,9 @@ public class Personal {
     @Column(value = "username")
     private String username;
     @Column(value = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @Column(value = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
     @Column(value = "enabled")
     private Boolean enabled;
     @Column(value = "address")

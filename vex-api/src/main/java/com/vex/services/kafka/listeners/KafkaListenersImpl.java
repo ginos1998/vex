@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +23,8 @@ public class KafkaListenersImpl implements KafkaListeners {
         Personal personal = Personal.builder()
             .username(username)
             .enabled(true)
-            .createdAt(new Date())
-            .updatedAt(new Date())
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
             .build();
         personalRepository.create(personal)
             .doAfterTerminate(() -> log.info("personal {} saved successfully!", personal.getUsername()))

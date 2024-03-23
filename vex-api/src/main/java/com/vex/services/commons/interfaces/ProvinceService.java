@@ -1,8 +1,8 @@
-package com.vex.repositories;
+package com.vex.services.commons.interfaces;
 
 import com.vex.models.dtos.LocationDTO;
 import reactor.core.publisher.Mono;
 
-public interface ProvinceRepository {
+public interface ProvinceService {
     Mono<LocationDTO> getProvinceAndLocalityByLocalityId(Integer localityId);
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Getter
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
 
     private final ExceptionType exceptionType;
     private final String description;
