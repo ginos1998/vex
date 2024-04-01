@@ -42,7 +42,15 @@ public enum ExceptionType {
     NO_BRANCHES_FOUND("No branches found", "No branches found for company id=%s", "1046", HttpStatus.NOT_FOUND),
 
     // personal
-    PERSONAL_NOT_FOUND("Personal not found", "Personal not found: %s", "1100", HttpStatus.NOT_FOUND),;
+    PERSONAL_NOT_FOUND("Personal not found", "Personal not found: %s", "1100", HttpStatus.NOT_FOUND),
+
+    // product
+    ERROR_CREATING_PRODUCT("Error creating product", "Error creating product: %s", "1200", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_UPDATING_PRODUCT("Error updating product", "Error updating product: %s", "1201", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_DELETING_PRODUCT("Error deleting product", "Error deleting product: %s", "1202", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_GETTING_PRODUCTS_BY_BRANCH_WITH_FILTER("Error getting products by branch with filter", "Error getting products by branch with filter: %s", "1203", HttpStatus.INTERNAL_SERVER_ERROR),
+    ERROR_GETTING_PRODUCT("Error getting product", "Error getting product: %s", "1204", HttpStatus.INTERNAL_SERVER_ERROR),
+    PRODUCT_NOT_FOUND("Product not found", "Product not found with id=%s", "1205", HttpStatus.NOT_FOUND),;
 
     private final String message;
     private final String description;

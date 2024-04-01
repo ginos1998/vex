@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -50,16 +50,19 @@ public class Product {
     private BigDecimal ivaRate;
 
     @Column(value = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Column(value = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(value = "enabled")
     private String enabled;
 
     @Column(value = "supplier_id")
     private Integer supplierId;
+
+    @Column(value = "brand_id")
+    private Integer brandId;
 
     public boolean isEnabled() {
         return enabled.equals(Constants.CHAR_Y);
