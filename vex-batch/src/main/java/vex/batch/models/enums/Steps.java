@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum Steps {
 
     IMPORT_PRODUCT_CSV("importProductsCsvStep"),
+    MODIFY_PRODUCT_PRICE_STEP("modifyProductPriceStep"),
     CLEAN_UP("cleanUpJobStep");
 
     private final String value;

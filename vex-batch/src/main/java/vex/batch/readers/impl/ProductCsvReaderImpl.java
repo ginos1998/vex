@@ -8,8 +8,12 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import vex.batch.exceptions.BatchException;
+import vex.batch.exceptions.ExceptionType;
 import vex.batch.models.enums.Reader;
 import vex.batch.models.entities.Product;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -26,10 +30,14 @@ public class ProductCsvReaderImpl extends FlatFileItemReader<Product> {
         setResource(resource);
     }
 
-    public void initialize() throws Exception {
-        log.info("Initializing ProductCsvReaderImpl");
-        super.doOpen();
-        super.read();
+    public void initialize() {
+        try {
+            log.info("Initializing ProductCsvReaderImpl");
+            super.doOpen();
+            super.read();
+        } catch (Exception e) {
+            throw new BatchException(ExceptionType.PRODUCT_CSV_READER_EXCEPTION, List.of(e.getMessage()), e);
+        }
     }
 
     public void closeFile() {
@@ -37,7 +45,7 @@ public class ProductCsvReaderImpl extends FlatFileItemReader<Product> {
             log.info("Closing ProductCsvReaderImpl");
             super.doClose();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BatchException(ExceptionType.PRODUCT_CSV_READER_EXCEPTION, List.of(e.getMessage()), e);
         }
     }
 

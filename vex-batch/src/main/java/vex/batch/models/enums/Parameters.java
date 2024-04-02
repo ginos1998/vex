@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum Parameters {
     INPUT_FILE_NAME("input.file.name"),
     UNIQUENESS("uniqueness"),
-    START_AT("startAt"),;
+    START_AT("startAt"),
+    BRANCH_ID("branchId"),
+    PERCENTAGE("percentage");
 
     private final String value;
 }

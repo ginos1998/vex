@@ -31,7 +31,7 @@ public class ProductIntegrationConfig {
     @Value("${resources.folder}")
     private String resourcesFolder;
 
-    private final Job importProductsCsvJob;
+    private final Job importProductsCsv;
     private final JobRepository jobRepository;
 
     @Bean
@@ -70,7 +70,7 @@ public class ProductIntegrationConfig {
 
     public FileMessageToJobRequest fileMessageToJobRequest(){
         var transformer = new FileMessageToJobRequest();
-        transformer.setJob(importProductsCsvJob);
+        transformer.setJob(importProductsCsv);
         return transformer;
     }
 

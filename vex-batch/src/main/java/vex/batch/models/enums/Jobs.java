@@ -6,7 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Jobs {
-    IMPORT_PRODUCT_CSV_JOB("importProductCsvJob");
+    IMPORT_PRODUCT_CSV_JOB("importProductCsvJob"),
+    MODIFY_PRODUCT_PRICE_JOB("modifyProductPriceJob"),;
 
     private final String name;
 }
