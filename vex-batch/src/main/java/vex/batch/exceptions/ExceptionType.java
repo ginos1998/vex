@@ -17,8 +17,16 @@ public enum ExceptionType {
     PRODUCT_CSV_READER_EXCEPTION(1103, "An error occurred while reading products from the CSV file", "An error occurred while reading products from the CSV file. Details: %s"),
     PRODUCT_CSV_PROCESSOR_EXCEPTION(1104, "An error occurred while processing a product from the CSV file", "An error occurred while processing a product from the CSV file. Product: %s"),
     PRODUCT_DB_PROCESS_EXCEPTION(1105, "An error occurred while processing a product from the database", "An error occurred while processing a product from the database. Product: %s"),
+    PRODUCT_DB_READER_EXCEPTION_READING_PRODUCTS_TO_SYNC_PRICE_WITH_DOLLAR(1106, "An error occurred while reading products to sync price with dollar", "An error occurred while reading products to sync price with dollar. Details: %s"),
+    PRODUCT_DB_PROCESS_EXCEPTION_SYNCHRONIZING_WITH_DOLLAR_PRICE(1107, "An error occurred while synchronizing product price with dollar", "An error occurred while synchronizing product price with dollar. Details: %s"),
+    PRODUCT_DB_WRITE_EXCEPTION_SYNCHRONIZING_WITH_DOLLAR_PRICE(1108, "An error occurred while writing products to sync price with dollar", "An error occurred while writing products to sync price with dollar. Details: %s"),
+
+    // dollar
+    DOLLAR_API_EXCEPTION(1200, "An error occurred while calling the dollar API", "An error occurred while calling the dollar API. Details: %s"),
 
     ;
+
+
     private final Integer code;
     private final String message;
     private final String description;

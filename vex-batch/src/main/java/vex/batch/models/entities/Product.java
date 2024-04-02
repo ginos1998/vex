@@ -60,6 +60,9 @@ public class Product {
 
     @Column(name = "brand_id")
     private Integer brandId;
+
+    @Column(name = "dollar_rate")
+    private BigDecimal dollarRate;
     
 
     public static String[] getCsvHeaders() {
